@@ -30,6 +30,8 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       run: npx sonar-scanner \
-        -Dsonar.projectKey=your_project_key \
-        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        sonar-scanner \
+               -Dsonar.projectKey=test \
+               -Dsonar.sources=. \
+               -Dsonar.host.url=http://34.221.130.56:9000 \
+               -Dsonar.login=02550d7bd01a52d64877813d3f8b0a2f528a746c
