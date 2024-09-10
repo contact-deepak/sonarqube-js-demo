@@ -17,22 +17,22 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up JDK
-      uses: actions/setup-java@v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        java-version: '17'
-        java-package: 'jdk'
-        distribution: 'zulu'  # Try using 'zulu' or another supported distribution
-        check-latest: false
+        node-version: '16'  # Use the version of Node.js you need
 
-    - name: Build with Maven
-      run: mvn clean install
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run ESLint
+      run: npx eslint .  # Adjust the path if needed
 
     - name: SonarQube Scan
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      run: mvn sonar:sonar \
+      run: npx sonar-scanner \
         -Dsonar.projectKey=your_project_key \
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
