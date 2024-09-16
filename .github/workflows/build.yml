@@ -30,7 +30,7 @@ jobs:
     - name: Run SonarQube Scan
       run: |
         sonar-scanner \
-          -Dsonar.projectKey=your_project_key \
+          -Dsonar.projectKey=test \
           -Dsonar.sources=. \
           -Dsonar.host.url=http://ec2-18-237-132-227.us-west-2.compute.amazonaws.com:9000 \
           -Dsonar.login=$SONAR_TOKEN
