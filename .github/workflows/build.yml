@@ -13,7 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up JDK 17 for Java projects (if needed)
+    - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         distribution: 'adopt'
@@ -26,10 +26,10 @@ jobs:
         curl -o sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
         unzip sonar-scanner.zip -d $HOME
         export PATH="$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH"
-
+      
     - name: Run SonarQube Scan
       run: |
-        sonar-scanner \
+        $HOME/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner \
           -Dsonar.projectKey=test \
           -Dsonar.sources=. \
           -Dsonar.host.url=http://ec2-18-237-132-227.us-west-2.compute.amazonaws.com:9000 \
