@@ -1,37 +1,39 @@
-name: SonarQube Analysis
+name: SonarQube Scan
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
-    name: Analyze with SonarQube
+  sonarQubeScan:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: Set up JDK 17 for Java projects (if needed)
+      uses: actions/setup-java@v3
       with:
-        node-version: '18'  # Use the Node.js version that fits your project needs
+        distribution: 'adopt'
+        java-version: '17'
 
-    - name: Install dependencies
-      run: npm install
+    - name: Install SonarScanner
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y unzip
+        curl -o sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+        unzip sonar-scanner.zip -d $HOME
+        export PATH="$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH"
 
-    - name: SonarQube Scan
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      run: npx sonar-scanner \
+    - name: Run SonarQube Scan
+      run: |
         sonar-scanner \
-               -Dsonar.projectKey=test \
-               -Dsonar.sources=. \
-               -Dsonar.host.url=http://34.221.130.56:9000 \
-               -Dsonar.login=02550d7bd01a52d64877813d3f8b0a2f528a746c
+          -Dsonar.projectKey=your_project_key \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=http://ec2-18-237-132-227.us-west-2.compute.amazonaws.com:9000 \
+          -Dsonar.login=$SONAR_TOKEN
+
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
