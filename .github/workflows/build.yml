@@ -37,7 +37,7 @@ jobs:
       - name: Download SonarQube Report (JSON)
         run: |
           curl -u ${{ secrets.SONAR_TOKEN }}: \
-          "http://<your-ec2-ip>:9000/api/issues/search?projectKey=your_project_key" \
+          "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/issues/search?projectKey=test1" \
           -o sonarqube-report.json
 
       - name: Upload Report as Artifact
