@@ -34,14 +34,16 @@ jobs:
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-      - name: Generate and Download CNES Report
+      - name: Download CNES Report as Word Document
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          curl -X POST -u $SONAR_TOKEN: "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/cnesreport/report?key=test1&format=pdf" -o cnes-report.doc
-      
+          curl -u $SONAR_TOKEN: \
+          "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/cnesreport/report?key=test1&format=docx" \
+          -o cnes-report.docx
+
       - name: Upload Report as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: sonar-cnes-report
-          path: cnes-report.doc
+          path: cnes-report.docx
