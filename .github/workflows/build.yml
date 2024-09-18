@@ -38,10 +38,10 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          curl -X POST -u $SONAR_TOKEN: "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/cnesreport/report?key=test1&format=pdf" -o cnes-report.pdf
+          curl -X POST -u $SONAR_TOKEN: "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/cnesreport/report?key=test1&format=pdf" -o cnes-report.doc
       
       - name: Upload Report as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: sonar-cnes-report
-          path: cnes-report.pdf
+          path: cnes-report.doc
