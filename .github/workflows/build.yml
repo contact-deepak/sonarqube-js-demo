@@ -34,26 +34,14 @@ jobs:
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-      - name: Wait for SonarQube Quality Gate
-        id: wait_for_gate
+      - name: Generate and Download CNES Report
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-         echo "Waiting for SonarQube quality gate to finish..."
-         status="PENDING"
-         until [ "$status" != "PENDING" ]; do
-          status=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: \
-            "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/qualitygates/project_status?projectKey=test1" | jq -r .projectStatus.status)
-          echo "Status: $status"
-          sleep 15
-         done
-
-      - name: Download SonarQube Report (JSON)
-        run: |
-          curl -u ${{ secrets.SONAR_TOKEN }}: \
-          "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/issues/search?projectKey=test1" \
-          -o sonarqube-report.json
-
+          curl -X POST -u $SONAR_TOKEN: "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/cnesreport/report?key=test1&format=pdf" -o cnes-report.pdf
+      
       - name: Upload Report as Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: sonarqube-report
-          path: sonarqube-report.json          
+          name: sonar-cnes-report
+          path: cnes-report.pdf
