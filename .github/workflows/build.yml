@@ -40,8 +40,12 @@ jobs:
           "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/issues/search?projectKey=test1" \
           -o sonarqube-report.json
 
-      - name: Upload Report as Artifact
+      - name: Prettify JSON Report
+        run: |
+          cat sonarqube-report.json | jq '.' > pretty-sonarqube-report.json
+
+      - name: Upload Pretty Report as Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: sonarqube-report
-          path: sonarqube-report.json
+          name: pretty-sonarqube-report
+          path: pretty-sonarqube-report.json
