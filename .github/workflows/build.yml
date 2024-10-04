@@ -29,7 +29,7 @@ jobs:
       - name: Run SonarQube Scan
         run: |
           sonar-scanner \
-          -Dsonar.projectKey=test1 \
+          -Dsonar.projectKey=test \
           -Dsonar.sources=. \
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
@@ -37,7 +37,7 @@ jobs:
       - name: Download SonarQube Report (JSON)
         run: |
           curl -u ${{ secrets.SONAR_TOKEN }}: \
-          "http://ec2-35-161-255-33.us-west-2.compute.amazonaws.com:9000/api/issues/search?projectKey=test1" \
+          "http://ec2-13-201-97-206.ap-south-1.compute.amazonaws.com/api/issues/search?projectKey=test" \
           -o sonarqube-report.json
 
       - name: Prettify JSON Report
